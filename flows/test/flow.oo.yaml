@@ -1,0 +1,63 @@
+nodes:
+  - node_id: perplexity_search#1
+    title: "Perplexity Search #1"
+    inputs_from:
+      - handle: searchText
+        value: What is OOMOL studio?
+      - handle: token
+        value: ${{OO_SECRET:Custom,perplexity,token}}
+      - handle: model
+        value: sonar
+      - handle: max_tokens
+        value: 4096
+      - handle: temperature
+        value: 0.7
+      - handle: top_k
+        value: 5
+      - handle: top_p
+        value: 1
+      - handle: presence_penalty
+        value: 0
+      - handle: frequency_penalty
+        value: 1
+      - handle: search_context_size
+        value: low
+      - handle: search_recency_filter
+        value: null
+      - handle: search_after_date_filter
+        value: null
+      - handle: search_before_date_filter
+        value: null
+      - handle: return_images
+        value: false
+      - handle: return_related_questions
+        value: false
+      - handle: search_domain_filter
+        value:
+          []
+      - handle: retryCount
+        value: 3
+    task: self::perplexity_search
+  - node_id: +javascript#1
+    title: "Preview Raw JSON"
+    icon: ":skill-icons:javascript:"
+    task:
+      ui:
+        default_width: 450
+      inputs_def:
+        - handle: input
+          description: Input
+          json_schema:
+            type: object
+            additionalProperties: false
+      outputs_def:
+        []
+      executor:
+        name: nodejs
+        options:
+          entry: scriptlets/+scriptlet#1.js
+    inputs_from:
+      - handle: input
+        from_node:
+          - node_id: perplexity_search#1
+            output_handle: raw
