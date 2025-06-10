@@ -1,0 +1,184 @@
+ui:
+  default_width: 647.4244705230153
+inputs_def:
+  - handle: searchText
+    description: Search text
+    json_schema:
+      type: string
+  - handle: token
+    description: Perplexity Token
+    json_schema:
+      contentMediaType: oomol/secret
+      type: string
+  - handle: model
+    description: models
+    json_schema:
+      enum:
+        - sonar
+        - sonar-pro
+        - sonar-deep-research
+        - sonar-reasoning-pro
+        - sonar-reasoning
+        - r1-1776
+      ui:options:
+        labels:
+          - sonar
+          - sonar-pro
+          - sonar-deep-research
+          - sonar-reasoning-pro
+          - sonar-reasoning
+          - r1-1776
+    value: sonar
+  - handle: max_tokens
+    description: The maximum number of completion tokens returned by the API.
+      Controls the length of the model's response. If the response would exceed
+      this limit, it will be truncated. Higher values allow for longer responses
+      but may increase processing time and costs.
+    json_schema:
+      type: integer
+    value: 4096
+  - handle: temperature
+    description: The amount of randomness in the response, valued between 0 and 2.
+      Lower values (e.g., 0.1) make the output more focused, deterministic, and
+      less creative. Higher values (e.g., 1.5) make the output more random and
+      creative. Use lower values for factual/information retrieval tasks and
+      higher values for creative applications.
+    json_schema:
+      type: number
+      minimum: 0
+      exclusiveMaximum: 2
+    value: 0.7
+  - handle: top_k
+    description: The number of tokens to keep for top-k filtering. Limits the model
+      to consider only the k most likely next tokens at each step. Lower values
+      (e.g., 10) make the output more focused and deterministic, while higher
+      values allow for more diverse outputs. A value of 0 disables this filter.
+      Often used in conjunction with top_p to control output randomness.
+    json_schema:
+      type: number
+    value: 5
+  - handle: top_p
+    description: The nucleus sampling threshold, valued between 0 and 1. Controls
+      the diversity of generated text by considering only the tokens whose
+      cumulative probability exceeds the top_p value. Lower values (e.g., 0.5)
+      make the output more focused and deterministic, while higher values (e.g.,
+      0.95) allow for more diverse outputs. Often used as an alternative to
+      temperature.
+    json_schema:
+      type: number
+      minimum: 0
+      maximum: 1
+    value: 1
+  - handle: presence_penalty
+    description: Positive values increase the likelihood of discussing new topics.
+      Applies a penalty to tokens that have already appeared in the text,
+      encouraging the model to talk about new concepts. Values typically range
+      from 0 (no penalty) to 2.0 (strong penalty). Higher values reduce
+      repetition but may lead to more off-topic text.
+    json_schema:
+      type: number
+      minimum: 0
+      maximum: 2
+    value: 0
+  - handle: frequency_penalty
+    description: Decreases likelihood of repetition based on prior frequency.
+      Applies a penalty to tokens based on how frequently they've appeared in
+      the text so far. Values typically range from 0 (no penalty) to 2.0 (strong
+      penalty). Higher values (e.g., 1.5) reduce repetition of the same words
+      and phrases. Useful for preventing the model from getting stuck in loops.
+    json_schema:
+      type: number
+      maximum: 2
+      minimum: 0
+    value: 1
+  - handle: search_context_size
+    description: "Determines how much search context is retrieved for the model.
+      Options are: low (minimizes context for cost savings but less
+      comprehensive answers), medium (balanced approach suitable for most
+      queries), and high (maximizes context for comprehensive answers but at
+      higher cost)."
+    json_schema:
+      enum:
+        - low
+        - "medium"
+        - "high"
+      ui:options:
+        labels:
+          - low
+          - medium
+          - high
+    value: low
+  - handle: search_recency_filter
+    description: Filters search results based on time
+    json_schema:
+      enum:
+        - day
+        - week
+        - month
+        - year
+      ui:options:
+        labels:
+          - day
+          - week
+          - month
+          - year
+    value:
+    nullable: true
+  - handle: search_after_date_filter
+    description: Filters search results to only include content published after this date.
+    json_schema:
+      type: string
+      format: date
+    value:
+    nullable: true
+  - handle: search_before_date_filter
+    description: Filters search results to only include content published before this date.
+    json_schema:
+      type: string
+      format: date
+    value:
+    nullable: true
+  - handle: return_images
+    json_schema:
+      type: boolean
+    value: false
+    description: Determines whether search results should include images.
+  - handle: return_related_questions
+    json_schema:
+      type: boolean
+    value: false
+    description: Determines whether related questions should be returned.
+  - handle: search_domain_filter
+    json_schema:
+      type: array
+      items:
+        type: string
+      maxItems: 10
+    value:
+      []
+    nullable: true
+    description: "A list of domains to limit search results to. Currently limited to
+      10 domains for Allowlisting and Denylisting. For Denylisting, add a - at
+      the beginning of the domain string. "
+  - handle: retryCount
+    json_schema:
+      type: integer
+    value: 3
+outputs_def:
+  - handle: raw
+    description: Output
+    json_schema:
+      type: object
+      additionalProperties: false
+  - handle: text
+    json_schema:
+      type: string
+      ui:widget: text
+executor:
+  name: nodejs
+  options:
+    entry: main.ts
+    spawn: false
+title: Perplexity Search
+icon: ":skill-icons:typescript:"
+description: "Ref: https://docs.perplexity.ai/api-reference/chat-completions-post"

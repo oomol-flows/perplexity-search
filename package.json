@@ -1,0 +1,6 @@
+{
+  "private": true,
+  "dependencies": {
+    "p-retry": "^6.2.1"
+  }
+}
