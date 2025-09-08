@@ -180,5 +180,21 @@ executor:
     entry: main.ts
     spawn: false
 title: Perplexity Search
-icon: ":skill-icons:typescript:"
-description: "Ref: https://docs.perplexity.ai/api-reference/chat-completions-post"
+icon: ":carbon:search-locate:"
+description: "This block provides intelligent web search capabilities using Perplexity AI's advanced search engine. It performs real-time web searches and returns AI-generated comprehensive answers based on multiple web sources.
+
+**Inputs:**
+- Search query text and Perplexity API token (required)
+- Multiple AI models for different use cases (sonar, sonar-pro, sonar-deep-research, etc.)
+- Response control parameters (max tokens, temperature, top-k, penalties)
+- Search filtering options (date ranges, domain filters, recency filters)
+- Additional options (return images, related questions, retry settings)
+
+**Outputs:**
+- Raw: Complete API response with all metadata and structured data
+- Text: Clean, formatted text response ready for display or further processing
+
+**Functionality:**
+The block sends your search query to Perplexity AI, which searches the web in real-time and generates intelligent, comprehensive answers by analyzing multiple sources. It supports advanced filtering, different AI models optimized for various tasks, and provides both structured data and human-readable text outputs. Built-in retry logic ensures reliable performance.
+
+Ref: https://docs.perplexity.ai/api-reference/chat-completions-post"
